@@ -1,0 +1,2 @@
+# tradercad
+Financial analysis tool
