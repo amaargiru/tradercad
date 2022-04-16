@@ -1,6 +1,8 @@
-using DataConnectors;
-using NUnit.Framework;
 using Core;
+
+using DataConnectors;
+
+using NUnit.Framework;
 
 namespace Tests;
 public partial class DataConnectorsTests

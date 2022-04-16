@@ -7,20 +7,19 @@ public class Crossover : IStrategy
         var indicator = indicatorRequests[0].Indicator; // Only one indicator is needed for the Crossover strategy
         var coeffs = indicatorRequests[0].Coeffs;
 
-        if (indicator is null) throw new ArgumentNullException(nameof(indicator) ,"Indicator is null.");
-        if (coeffs is null) throw new ArgumentNullException(nameof(coeffs), "Coefficients' array is null.");
+        if (indicator is null)
+            throw new ArgumentNullException(nameof(indicator), "Indicator is null.");
+        if (coeffs is null)
+            throw new ArgumentNullException(nameof(coeffs), "Coefficients' array is null.");
 
         var indicatorResult = indicator.Read(data, coeffs);
 
-        var diff = new List<IndicatorPoint>();
-
+        var diff = new List<Point>();
         foreach (var d in data)
         {
             var indicatorPoint = indicatorResult.SingleOrDefault(a => a.PointDateTime == d.PointDateTime);
             if (indicatorPoint is not null)
-            {
-                diff.Add(new IndicatorPoint { PointDateTime = d.PointDateTime, Value = Utility.CalculateAverage(d) - indicatorPoint.Value });
-            }
+                diff.Add(new Point { PointDateTime = d.PointDateTime, Value = Utility.CalculateAverage(d) - indicatorPoint.Value });
         }
 
         var areaOfInterest = new List<PointOfInterest>();
@@ -36,8 +35,8 @@ public class Crossover : IStrategy
                     areaOfInterest.Add(new PointOfInterest
                     {
                         Message = "Crossover",
-                        AreaDateTime = (DateTime)diff[i].PointDateTime,
-                        AreaValue = (decimal)diff[i].Value
+                        AreaDateTime = diff[i].PointDateTime.GetValueOrDefault(),
+                        AreaValue = diff[i].Value.GetValueOrDefault()
                     });
                 }
             }

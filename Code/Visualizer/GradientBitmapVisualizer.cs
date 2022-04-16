@@ -1,7 +1,8 @@
-﻿using Core;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+
+using Core;
 
 namespace Visualizer;
 
@@ -11,7 +12,7 @@ public class GradientBitmapVisualizer
     private const int XAxisRow = 25;
     private const int FooterRow = 25;
 
-    public Bitmap Read(EquityPoint[] data, IndicatorPoint[] indicator, string headline, int pictureWidth, int pictureHeight)
+    public Bitmap Read(EquityPoint[] data, Core.Point[] indicator, string headline, int pictureWidth, int pictureHeight)
     {
         var bitmap = new Bitmap(pictureWidth, pictureHeight);
 
@@ -46,7 +47,7 @@ public class GradientBitmapVisualizer
         return bitmap;
     }
 
-    private static void DrawDataAndIndicator(Graphics graphics, EquityPoint[] data, IndicatorPoint[] indicator, int pictureWidth, int pictureHeightt)
+    private static void DrawDataAndIndicator(Graphics graphics, EquityPoint[] data, Core.Point[] indicator, int pictureWidth, int pictureHeightt)
     {
         var dataLength = data.Length;
         var xStep = (float)pictureWidth / dataLength;
@@ -56,28 +57,28 @@ public class GradientBitmapVisualizer
         var max = averages.Max();
         var min = averages.Min();
 
-        var dataCurve = new Point[dataLength + 2]; // + start point at left-bottom side and stop point at right-bottom side
-        dataCurve[0] = new Point(x: 0, y: drawingFieldMaxHeight);
+        var dataCurve = new System.Drawing.Point[dataLength + 2]; // + start point at left-bottom side and stop point at right-bottom side
+        dataCurve[0] = new System.Drawing.Point(x: 0, y: drawingFieldMaxHeight);
 
         for (var i = 0; i < dataLength; i++)
         {
-            dataCurve[i + 1] = new Point
+            dataCurve[i + 1] = new System.Drawing.Point
                 (
                 (int)(i * xStep),
                 (int)Utility.ConvertOneRangeToAnother(averages[i], min, max, drawingFieldMaxHeight, HeadRowHeight));
         }
 
-        dataCurve[dataLength + 1] = new Point((int)((dataLength - 1) * xStep), drawingFieldMaxHeight);
+        dataCurve[dataLength + 1] = new System.Drawing.Point((int)((dataLength - 1) * xStep), drawingFieldMaxHeight);
 
         var gradientBrush = new LinearGradientBrush(
-            new Point(0, HeadRowHeight),
-            new Point(0, drawingFieldMaxHeight),
+            new System.Drawing.Point(0, HeadRowHeight),
+            new System.Drawing.Point(0, drawingFieldMaxHeight),
             Color.FromArgb(0xA0, 0xE0, 0x2B, 0x1A),
             Color.FromArgb(0xA0, 0x1A, 0x9B, 0xE0));
 
         graphics.FillPolygon(gradientBrush, dataCurve);
 
-        var indicatorCurve = new List<Point>();
+        var indicatorCurve = new List<System.Drawing.Point>();
 
         for (var i = 0; i < dataLength; i++)
         {
@@ -85,7 +86,7 @@ public class GradientBitmapVisualizer
             {
                 var indicatorValue = indicator[i].Value.GetValueOrDefault();
 
-                indicatorCurve.Add(new Point(
+                indicatorCurve.Add(new System.Drawing.Point(
                         (int)(i * xStep),
                         (int)Utility.ConvertOneRangeToAnother(indicatorValue, min, max, drawingFieldMaxHeight, HeadRowHeight)));
             }

@@ -21,7 +21,10 @@ public class MetaData
     public string Symbol { get; set; } = null!;
 
     [JsonProperty("3. Last Refreshed")]
-    public DateTimeOffset LastRefreshed { get; set; }
+    public DateTimeOffset LastRefreshed
+    {
+        get; set;
+    }
 
     [JsonProperty("4. Output Size")]
     public string OutputSize { get; set; } = null!;

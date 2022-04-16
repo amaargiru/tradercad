@@ -2,6 +2,8 @@
 
 public enum Equities
 {
+    RANDOM_TEST_DATA,  
+
     AAPL,
     ABT,
     ADBE,

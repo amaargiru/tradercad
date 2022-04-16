@@ -2,5 +2,5 @@
 
 public interface IIndicator
 {
-    IndicatorPoint[] Read(EquityPoint[] data, decimal[] coeffs);
+    Point[] Read(EquityPoint[] data, decimal[] coeffs);
 }

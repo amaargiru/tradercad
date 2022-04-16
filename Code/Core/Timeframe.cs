@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Core;
+﻿namespace Core;
 
 // List of all available timeframes
 public enum Timeframe

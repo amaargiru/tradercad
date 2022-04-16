@@ -2,7 +2,7 @@
 
 public class SimpleMovingAverage : IIndicator
 {
-    public IndicatorPoint[] Read(EquityPoint[] data, decimal[] coeffs)
+    public Point[] Read(EquityPoint[] data, decimal[] coeffs)
     {
         if (coeffs is null)
         {
@@ -19,7 +19,7 @@ public class SimpleMovingAverage : IIndicator
         var period = coeffs[0];
         var averages = Utility.CalculateAverage(data);
 
-        IndicatorPoint[] sma = Utility.InitializeArray<IndicatorPoint>(dataLength);
+        Point[] sma = Utility.InitializeArray<Point>(dataLength);
 
         decimal window = 0;
 

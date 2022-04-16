@@ -1,5 +1,6 @@
-﻿using Newtonsoft.Json;
-using Core;
+﻿using Core;
+
+using Newtonsoft.Json;
 
 namespace DataConnectors;
 

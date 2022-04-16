@@ -1,4 +1,5 @@
 ﻿using Core;
+
 using static System.Math;
 
 namespace DataConnectors;
