@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using TraderCadCore;
+using Core;
 
 namespace Tests;
 

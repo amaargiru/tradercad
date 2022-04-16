@@ -1,7 +1,6 @@
-﻿namespace TraderCadCore;
+﻿namespace Core;
 
-// List of all available and tested tools equities
-public enum Equity
+public enum Equities
 {
     AAPL,
     ABT,

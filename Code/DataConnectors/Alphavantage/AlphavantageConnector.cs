@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System.Globalization;
-using TraderCadCore;
+using Core;
 
 namespace DataConnectors;
 
 public class AlphavantageConnector : IReadOnlyDataConnector
 {
-    public EquityPoint[] BulkRead(Equity equity, Timeframe timeframe, DateTime startDateTime, DateTime endDateTime,
+    public EquityPoint[] BulkRead(Equities equity, Timeframe timeframe, DateTime startDateTime, DateTime endDateTime,
         string password = null!, int timeout = 0)
     {
         if (timeframe != Timeframe.D1)
@@ -56,7 +56,7 @@ public class AlphavantageConnector : IReadOnlyDataConnector
     }
 
     [Obsolete($"Method \"{nameof(Read)}\" doesn't have built-in Alphavantage API support, please use \"{nameof(BulkRead)}\" instead.")]
-    public EquityPoint Read(Equity equity, Timeframe timeframe, DateTime dateTime, string password = null!, int timeout = 0)
+    public EquityPoint Read(Equities equity, Timeframe timeframe, DateTime dateTime, string password = null!, int timeout = 0)
     {
         var data = BulkRead(equity, timeframe, DateTime.MinValue, DateTime.Now, password, timeout);
 

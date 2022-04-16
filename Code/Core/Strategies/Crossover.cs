@@ -1,24 +1,29 @@
-﻿namespace TraderCadCore;
+﻿namespace Core;
 
 public class Crossover : IStrategy
 {
-    public List<AreaOfInterest> Read(EquityPoint[] data, params IndicatorRequest[] indicatorRequests)
+    public List<PointOfInterest> Read(EquityPoint[] data, params NeededIndicator[] indicatorRequests)
     {
-        var diff = new List<IndicatorPoint>();
+        var indicator = indicatorRequests[0].Indicator; // Only one indicator is needed for the Crossover strategy
+        var coeffs = indicatorRequests[0].Coeffs;
 
-        var indicator = indicatorRequests[0].indicator; // Only one indicator is needed for the Crossover strategy
-        var answer = indicator.Read(data, indicatorRequests[0].coeffs);
+        if (indicator is null) throw new ArgumentNullException(nameof(indicator) ,"Indicator is null.");
+        if (coeffs is null) throw new ArgumentNullException(nameof(coeffs), "Coefficients' array is null.");
+
+        var indicatorResult = indicator.Read(data, coeffs);
+
+        var diff = new List<IndicatorPoint>();
 
         foreach (var d in data)
         {
-            var indicatorPoint = answer.SingleOrDefault(a => a.PointDateTime == d.PointDateTime);
+            var indicatorPoint = indicatorResult.SingleOrDefault(a => a.PointDateTime == d.PointDateTime);
             if (indicatorPoint is not null)
             {
                 diff.Add(new IndicatorPoint { PointDateTime = d.PointDateTime, Value = Utility.CalculateAverage(d) - indicatorPoint.Value });
             }
         }
 
-        var areas = new List<AreaOfInterest>();
+        var areaOfInterest = new List<PointOfInterest>();
 
         var diffCount = diff.Count;
 
@@ -28,7 +33,7 @@ public class Crossover : IStrategy
             {
                 if ((diff[i].Value > 0 && diff[i - 1].Value <= 0) || (diff[i].Value < 0 && diff[i - 1].Value >= 0))
                 {
-                    areas.Add(new AreaOfInterest
+                    areaOfInterest.Add(new PointOfInterest
                     {
                         Message = "Crossover",
                         AreaDateTime = (DateTime)diff[i].PointDateTime,
@@ -38,6 +43,6 @@ public class Crossover : IStrategy
             }
         }
 
-        return areas;
+        return areaOfInterest;
     }
 }

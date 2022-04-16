@@ -17,9 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\TraderCadCore.csproj" />
+    <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\DataConnectors\DataConnectors.csproj" />
-    <ProjectReference Include="..\Visualizer\Visualizer.csproj" />
+    <ProjectReference Include="..\Visualizer\Visualizers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

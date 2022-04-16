@@ -1,6 +1,6 @@
 ﻿using System.Security.Cryptography;
 
-namespace TraderCadCore;
+namespace Core;
 
 public static partial class Utility
 {

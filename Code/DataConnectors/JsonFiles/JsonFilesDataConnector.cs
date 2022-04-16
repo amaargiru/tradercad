@@ -1,11 +1,11 @@
 ﻿using Newtonsoft.Json;
-using TraderCadCore;
+using Core;
 
 namespace DataConnectors;
 
 public class JsonFilesDataConnector : IFullAccessDataConnector
 {
-    public int BulkInsert(Equity equity, Timeframe timeframe, EquityPoint[] equityPoints, string password = null!, int timeout = 0)
+    public int BulkInsert(Equities equity, Timeframe timeframe, EquityPoint[] equityPoints, string password = null!, int timeout = 0)
     {
         var jsonFileName = Utility.GetJsonFileName(equity, timeframe);
         string convertedJson;
@@ -27,7 +27,7 @@ public class JsonFilesDataConnector : IFullAccessDataConnector
         return equityPoints.Length;
     }
 
-    public bool Insert(Equity equity, Timeframe timeframe, EquityPoint equityPoint, string password = null!, int timeout = 0)
+    public bool Insert(Equities equity, Timeframe timeframe, EquityPoint equityPoint, string password = null!, int timeout = 0)
     {
         var jsonFileName = Utility.GetJsonFileName(equity, timeframe);
         string convertedJson;
@@ -49,7 +49,7 @@ public class JsonFilesDataConnector : IFullAccessDataConnector
         return true;
     }
 
-    public EquityPoint[] BulkRead(Equity equity, Timeframe timeframe, DateTime startDateTime, DateTime endDateTime,
+    public EquityPoint[] BulkRead(Equities equity, Timeframe timeframe, DateTime startDateTime, DateTime endDateTime,
         string password = null!, int timeout = 0)
     {
         var jsonFileName = Utility.GetJsonFileName(equity, timeframe);
@@ -66,7 +66,7 @@ public class JsonFilesDataConnector : IFullAccessDataConnector
         return jsonData.Where(d => isMatchesDateTimeRange(d.PointDateTime)).ToArray();
     }
 
-    public EquityPoint Read(Equity equity, Timeframe timeframe, DateTime dateTime, string password = null!, int timeout = 0)
+    public EquityPoint Read(Equities equity, Timeframe timeframe, DateTime dateTime, string password = null!, int timeout = 0)
     {
         var jsonFileName = Utility.GetJsonFileName(equity, timeframe);
 
@@ -108,7 +108,7 @@ public class JsonFilesDataConnector : IFullAccessDataConnector
         return null;
     }
 
-    public bool Delete(Equity equity, Timeframe timeframe, DateTime dateTime, string password = null!, int timeout = 0)
+    public bool Delete(Equities equity, Timeframe timeframe, DateTime dateTime, string password = null!, int timeout = 0)
     {
         var jsonFileName = Utility.GetJsonFileName(equity, timeframe);
 

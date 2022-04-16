@@ -1,4 +1,4 @@
-﻿namespace TraderCadCore;
+﻿namespace Core;
 
 public record IndicatorPoint
 {

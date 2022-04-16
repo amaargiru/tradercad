@@ -1,4 +1,4 @@
-﻿using TraderCadCore;
+﻿using Core;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -81,14 +81,13 @@ public class GradientBitmapVisualizer
 
         for (var i = 0; i < dataLength; i++)
         {
-            if (indicator[i].Value != null)
+            if (indicator[i].Value.HasValue)
             {
-                var indicatorValue = (decimal)indicator[i].Value;
+                var indicatorValue = indicator[i].Value.GetValueOrDefault();
 
                 indicatorCurve.Add(new Point(
                         (int)(i * xStep),
-                        (int)Utility.ConvertOneRangeToAnother(indicatorValue, min, max, drawingFieldMaxHeight, HeadRowHeight))
-                );
+                        (int)Utility.ConvertOneRangeToAnother(indicatorValue, min, max, drawingFieldMaxHeight, HeadRowHeight)));
             }
         }
 
@@ -133,8 +132,7 @@ public class GradientBitmapVisualizer
             var adjustedSizeNew = graphics.MeasureString(text, adjustedFont);
 
             if
-            (x2 - x1 > Convert.ToInt32(adjustedSizeNew.Width) &&
-             y2 - y1 > Convert.ToInt32(adjustedSizeNew.Height))
+            (x2 - x1 > Convert.ToInt32(adjustedSizeNew.Width) && y2 - y1 > Convert.ToInt32(adjustedSizeNew.Height))
             {
                 return adjustedFont;
             }

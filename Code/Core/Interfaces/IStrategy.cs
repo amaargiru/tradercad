@@ -1,6 +1,6 @@
-﻿namespace TraderCadCore;
+﻿namespace Core;
 
 public interface IStrategy
 {
-    List<AreaOfInterest> Read(EquityPoint[] data, params IndicatorRequest[] indicatorRequests);
+    List<PointOfInterest> Read(EquityPoint[] data, params NeededIndicator[] indicatorRequests);
 }

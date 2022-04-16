@@ -1,4 +1,4 @@
-﻿using TraderCadCore;
+﻿using Core;
 using static System.Math;
 
 namespace DataConnectors;
@@ -10,7 +10,7 @@ public class RandomDataConnector : IReadOnlyDataConnector
     readonly decimal deviation = .1m;
     readonly int precision = 5;
 
-    public EquityPoint Read(Equity equity, Timeframe timeframe, DateTime dateTime, string password = null!, int timeout = 0)
+    public EquityPoint Read(Equities equity, Timeframe timeframe, DateTime dateTime, string password = null!, int timeout = 0)
     {
         var open = Round(Utility.GetRandomDecimal(minLevel, maxLevel), precision);
         var close = Round(Utility.GetRandomDecimal(minLevel, maxLevel), precision);
@@ -27,7 +27,7 @@ public class RandomDataConnector : IReadOnlyDataConnector
         };
     }
 
-    public EquityPoint[] BulkRead(Equity equity, Timeframe timeframe, DateTime startDateTime, DateTime endDateTime,
+    public EquityPoint[] BulkRead(Equities equity, Timeframe timeframe, DateTime startDateTime, DateTime endDateTime,
         string password = null!, int timeout = 0)
     {
         if (startDateTime > endDateTime)

@@ -1,4 +1,4 @@
-﻿namespace TraderCadCore;
+﻿namespace Core;
 
 public class SimpleMovingAverage : IIndicator
 {
@@ -6,7 +6,7 @@ public class SimpleMovingAverage : IIndicator
     {
         if (coeffs is null)
         {
-            throw new ArgumentNullException($"SMA indicator requires number of time periods, " +
+            throw new ArgumentNullException(nameof(coeffs), $"SMA indicator requires number of time periods, " +
                 $"but {nameof(coeffs)} is null.");
         }
         else if (coeffs.Min() <= 0)

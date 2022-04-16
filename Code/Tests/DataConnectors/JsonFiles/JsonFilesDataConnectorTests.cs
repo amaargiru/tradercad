@@ -1,11 +1,11 @@
 using DataConnectors;
 using NUnit.Framework;
-using TraderCadCore;
+using Core;
 
 namespace Tests;
 public partial class DataConnectorsTests
 {
-    private readonly Equity equity = Equity.AAPL;
+    private readonly Equities equity = Equities.AAPL;
     private readonly Timeframe timeframe = Timeframe.D1;
     private readonly int pointsLength = points.Length;
 
