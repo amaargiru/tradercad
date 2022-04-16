@@ -6,7 +6,7 @@
 ##          github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
 
 # Private settings like passwords etc
-appsettings_private.json
+# appsettings_private.json
 
 # Logs
 *.log.*
