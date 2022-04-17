@@ -1,11 +1,12 @@
 ﻿using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-
+using System.Runtime.Versioning;
 using Core;
 
 namespace Visualizer;
 
+[SupportedOSPlatform("windows")]
 public class GradientBitmapVisualizer
 {
     private const int HeadRowHeight = 25;

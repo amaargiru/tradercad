@@ -15,7 +15,7 @@ public class JsonFilesDataConnector : IFullAccessDataConnector
         {
             var json = File.ReadAllText(jsonFileName);
             var jsonData = JsonConvert.DeserializeObject<EquityPoint[]>(json);
-            jsonData = jsonData.Union(equityPoints).OrderBy(data => data.PointDateTime).ToArray();
+            jsonData = jsonData?.Union(equityPoints).OrderBy(data => data.PointDateTime).ToArray();
             convertedJson = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
         }
         else
@@ -37,7 +37,7 @@ public class JsonFilesDataConnector : IFullAccessDataConnector
         {
             var json = File.ReadAllText(jsonFileName);
             var jsonData = JsonConvert.DeserializeObject<EquityPoint[]>(json);
-            jsonData = jsonData.Append(equityPoint).OrderBy(p => p.PointDateTime).ToArray();
+            jsonData = jsonData?.Append(equityPoint).OrderBy(p => p.PointDateTime).ToArray();
             convertedJson = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
         }
         else
@@ -50,7 +50,7 @@ public class JsonFilesDataConnector : IFullAccessDataConnector
         return true;
     }
 
-    public EquityPoint[] BulkRead(Equities equity, Timeframe timeframe, DateTime startDateTime, DateTime endDateTime,
+    public EquityPoint[]? BulkRead(Equities equity, Timeframe timeframe, DateTime startDateTime, DateTime endDateTime,
         string password = null!, int timeout = 0)
     {
         var jsonFileName = Utility.GetJsonFileName(equity, timeframe);
@@ -64,10 +64,10 @@ public class JsonFilesDataConnector : IFullAccessDataConnector
         var jsonData = JsonConvert.DeserializeObject<EquityPoint[]>(json);
 
         bool isMatchesDateTimeRange(DateTime dt) => (dt >= startDateTime) && (dt <= endDateTime);
-        return jsonData.Where(d => isMatchesDateTimeRange(d.PointDateTime)).ToArray();
+        return jsonData?.Where(d => isMatchesDateTimeRange(d.PointDateTime)).ToArray();
     }
 
-    public EquityPoint Read(Equities equity, Timeframe timeframe, DateTime dateTime, string password = null!, int timeout = 0)
+    public EquityPoint? Read(Equities equity, Timeframe timeframe, DateTime dateTime, string password = null!, int timeout = 0)
     {
         var jsonFileName = Utility.GetJsonFileName(equity, timeframe);
 
@@ -82,11 +82,12 @@ public class JsonFilesDataConnector : IFullAccessDataConnector
         {
             var jsonData = JsonConvert.DeserializeObject<EquityPoint[]>(json);
 
-            foreach (var response in jsonData)
-            {
-                if (response.PointDateTime == dateTime)
-                    return response;
-            }
+            if (jsonData is not null)
+                foreach (var response in jsonData)
+                {
+                    if (response.PointDateTime == dateTime)
+                        return response;
+                }
         }
 
         catch (JsonSerializationException)
@@ -121,16 +122,19 @@ public class JsonFilesDataConnector : IFullAccessDataConnector
         var json = File.ReadAllText(jsonFileName);
         var jsonData = JsonConvert.DeserializeObject<EquityPoint[]>(json);
 
-        foreach (var response in jsonData)
+        if (jsonData is not null)
         {
-            if (response.PointDateTime == dateTime)
+            foreach (var response in jsonData)
             {
-                jsonData = jsonData.Where(d => d.PointDateTime != dateTime).ToArray();
+                if (response.PointDateTime == dateTime)
+                {
+                    jsonData = jsonData.Where(d => d.PointDateTime != dateTime).ToArray();
 
-                var cleanedJson = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
-                File.WriteAllText(jsonFileName, cleanedJson);
+                    var cleanedJson = JsonConvert.SerializeObject(jsonData, Formatting.Indented);
+                    File.WriteAllText(jsonFileName, cleanedJson);
 
-                return true;
+                    return true;
+                }
             }
         }
 

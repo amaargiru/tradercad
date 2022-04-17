@@ -1,4 +1,7 @@
-﻿namespace IntegrationTestRandomData;
+﻿using Core;
+using DataConnectors;
+
+namespace IntegrationTestRandomData;
 
 class Program
 {
@@ -6,25 +9,13 @@ class Program
     {
         Console.WriteLine("Start TraderCAD random data integration test.");
 
-        const string equity = "RandomData";
+        Equities equity = Equities.RANDOM_TEST_DATA;
+        Timeframe timeframe = Timeframe.D1;
         var startDateTime = new DateTime(year: 2000, month: 1, day: 1);
         var endDateTime = new DateTime(year: 2000, month: 3, day: 31);
-        var timeframe = Core.TimePeriod.Resolve(Core.Timeframe.D1);
 
         // Create random data
-
-        var randomData = DataConnectors.RandomDataConnector.BulkRead();
-
-/*
-        var randomDataConnectorRequest = new ReadDataConnectorRequest
-        {
-            StartDateTime = startDateTime,
-            EndDateTime = endDateTime,
-            Timeframe = timeframe
-        };
-
-        var randomDataConnector = new RandomDataProviderConnector();
-        var randomDataConnectorAnswer = randomDataConnector.Read(randomDataConnectorRequest);
-*/
+        RandomDataConnector randomDataConnector = new();
+        var randomData = randomDataConnector.BulkRead(equity, timeframe, startDateTime, endDateTime);
     }
 }

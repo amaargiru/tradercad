@@ -17,9 +17,7 @@ public partial class DataConnectorsTests
         var jsonFileName = Utility.GetJsonFileName(equity, timeframe);
 
         if (File.Exists(jsonFileName))
-        {
             File.Delete(jsonFileName);
-        }
     }
 
     [Test]
@@ -47,8 +45,8 @@ public partial class DataConnectorsTests
     public void JsonFilesDataConnector_CreateNewFileWithSinglePointAndReadIt()
     {
         var jsonConn = new JsonFilesDataConnector();
-        Assert.IsTrue(jsonConn.Insert(equity, timeframe, singlePoint, password: "", timeout: 0));
-        var point = jsonConn.Read(equity, timeframe, singlePoint.PointDateTime, password: "", timeout: 0);
+        Assert.IsTrue(jsonConn.Insert(equity, timeframe, singlePoint));
+        var point = jsonConn.Read(equity, timeframe, singlePoint.PointDateTime);
         Assert.IsTrue(point == singlePoint);
     }
 
@@ -56,26 +54,32 @@ public partial class DataConnectorsTests
     public void JsonFilesDataConnector_CreateNewFileWithMultiplePointsAndReadThem()
     {
         var jsonConn = new JsonFilesDataConnector();
-        var insertNum = jsonConn.BulkInsert(equity, timeframe, points, password: "", timeout: 0);
+        var insertNum = jsonConn.BulkInsert(equity, timeframe, points);
         Assert.AreEqual(insertNum, points.Length);
 
         var readPoints = jsonConn.BulkRead(equity, timeframe, points[0].PointDateTime, points[pointsLength - 1].PointDateTime);
-        Assert.IsTrue(points.SequenceEqual(readPoints));
+
+        Assert.IsNotNull(readPoints);
+        if (readPoints is not null)
+            Assert.IsTrue(points.SequenceEqual(readPoints));
     }
 
     [Test]
     public void JsonFilesDataConnector_CreateNewFileWithMultiplePointsAndAddSinglePointAndReadThemAll()
     {
         var jsonConn = new JsonFilesDataConnector();
-        var insertNum = jsonConn.BulkInsert(equity, timeframe, points, password: "", timeout: 0);
+        var insertNum = jsonConn.BulkInsert(equity, timeframe, points);
         Assert.AreEqual(insertNum, points.Length);
 
-        Assert.IsTrue(jsonConn.Insert(equity, timeframe, singlePoint, password: "", timeout: 0));
+        Assert.IsTrue(jsonConn.Insert(equity, timeframe, singlePoint));
 
         var manualInserted = points.Append(singlePoint).OrderBy(p => p.PointDateTime).ToArray();
 
-        var readPoints = jsonConn.BulkRead(equity, timeframe, points[0].PointDateTime, points[pointsLength - 1].PointDateTime);
-        Assert.IsTrue(manualInserted.SequenceEqual(readPoints));
+        EquityPoint[]? readPoints = jsonConn.BulkRead(equity, timeframe, points[0].PointDateTime, points[pointsLength - 1].PointDateTime);
+
+        Assert.IsNotNull(readPoints);
+        if (readPoints is not null)
+            Assert.IsTrue(manualInserted.SequenceEqual(readPoints));
     }
 
     [Test]
@@ -85,10 +89,10 @@ public partial class DataConnectorsTests
         var manualInserted = points.Append(singlePoint).OrderBy(p => p.PointDateTime).ToArray();
         jsonConn.BulkInsert(equity, timeframe, manualInserted, password: "", timeout: 0);
 
-        Assert.IsTrue(jsonConn.Delete(equity, timeframe, singlePoint.PointDateTime, password: "", timeout: 0));
+        Assert.IsTrue(jsonConn.Delete(equity, timeframe, singlePoint.PointDateTime));
 
         var readPoints = jsonConn.BulkRead(equity, timeframe, points[0].PointDateTime, points[pointsLength - 1].PointDateTime);
-        Assert.IsTrue(readPoints.SequenceEqual(points));
+        Assert.IsTrue(readPoints?.SequenceEqual(points));
     }
 
     private static readonly EquityPoint[] points = new EquityPoint[]

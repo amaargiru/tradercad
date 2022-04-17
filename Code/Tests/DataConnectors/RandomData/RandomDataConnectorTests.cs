@@ -12,9 +12,7 @@ public partial class DataConnectorsTests
         var conn = new RandomDataConnector();
         var p = conn.Read(equity, timeframe, DateTime.Now);
 
-        Assert.IsTrue(p.High > p.Open && p.High > p.Close &&
-                      p.Low < p.Open && p.Low < p.Close);
-
+        Assert.IsTrue(p.High > p.Open && p.High > p.Close && p.Low < p.Open && p.Low < p.Close);
         Assert.IsTrue(p.PointDateTime.Date == DateTime.Now.Date);
     }
 
